@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Dopecoast AI</title>
+    <title>Ask the AI</title>
   </head>
   <body>
     <h1>Ask the AI</h1>
     <input id="prompt" type="text" placeholder="Ask something..." />
-    <button onclick="askAI()">Send</button>
+    <button id="sendBtn">Send</button>
     <pre id="response"></pre>
 
     <script>
-      async function askAI() {
+      document.getElementById("sendBtn").addEventListener("click", async () => {
         const prompt = document.getElementById("prompt").value;
-        const res = await fetch("https://api.openai.com/v1/completions", {
+
+        const res = await fetch("/api/ask", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer YOUR_OPENAI_KEY"
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            model: "text-davinci-003",
-            prompt: prompt,
-            max_tokens: 100
-          })
+          body: JSON.stringify({ prompt })
         });
+
         const data = await res.json();
-        document.getElementById("response").innerText = data.choices[0].text;
-      }
+        document.getElementById("response").innerText = data.reply || "No response";
+      });
     </script>
   </body>
 </html>
