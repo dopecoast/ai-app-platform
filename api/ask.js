@@ -11,13 +11,13 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${apiKey}`
       },
       body: JSON.stringify({
         model: "text-davinci-003",
-        prompt,
-        max_tokens: 100,
-      }),
+        prompt: prompt,
+        max_tokens: 100
+      })
     });
 
     const data = await response.json();
@@ -28,6 +28,6 @@ export default async function handler(req, res) {
 
     res.status(200).json({ reply: data.choices[0].text.trim() });
   } catch (err) {
-    res.status(500).json({ error: "Something went wrong", details: err.message });
+    res.status(500).json({ error: "Server error: " + err.message });
   }
 }
