@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dopecoast AI</title>
+  </head>
+  <body>
+    <h1>Ask the AI</h1>
+    <input id="prompt" type="text" placeholder="Ask something..." />
+    <button onclick="askAI()">Send</button>
+    <pre id="response"></pre>
+
+    <script>
+      async function askAI() {
+        const prompt = document.getElementById("prompt").value;
+        const res = await fetch("https://api.openai.com/v1/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer YOUR_OPENAI_KEY"
+          },
+          body: JSON.stringify({
+            model: "text-davinci-003",
+            prompt: prompt,
+            max_tokens: 100
+          })
+        });
+        const data = await res.json();
+        document.getElementById("response").innerText = data.choices[0].text;
+      }
+    </script>
+  </body>
+</html>
